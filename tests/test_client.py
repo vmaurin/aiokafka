@@ -143,6 +143,9 @@ class TestKafkaClientIntegration(KafkaIntegrationTestCase):
         with self.assertRaises(NodeNotReadyError):
             await client.send(0, None)
 
+        with self.assertRaises(NodeNotReadyError):
+            await client.send(0, None, group=ConnectionGroup.COORDINATION)
+
         self.assertEqual(md.unauthorized_topics, {"topic_auth_error"})
 
     @run_until_complete
