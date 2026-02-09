@@ -395,10 +395,7 @@ class AIOKafkaClient:
                 return conn
 
         try:
-            if group == ConnectionGroup.DEFAULT:
-                broker = self.cluster.broker_metadata(node_id)
-            else:
-                broker = self.cluster.coordinator_metadata(node_id)
+            broker = self.cluster.broker_metadata(node_id)
 
             # XXX: earlier we only did an asserts, but it seems it's
             # possible to get a leader/coordinator that is for
@@ -547,11 +544,4 @@ class AIOKafkaClient:
         if error_type is not Errors.NoError:
             err = error_type()
             raise err
-        self.cluster.add_coordinator(
-            resp.coordinator_id,
-            resp.host,
-            resp.port,
-            rack=None,
-            purpose=(coordinator_type, coordinator_key),
-        )
         return resp.coordinator_id
